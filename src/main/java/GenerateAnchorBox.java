@@ -22,15 +22,18 @@ public class GenerateAnchorBox {
     private static final String XMAX_TAG = "<xmax>";
     private static final String YMAX_TAG = "<ymax>";
     private static List<String> xmlFiles = new ArrayList<>();
+    private static INDArray all_boxes = Nd4j.empty();
 
     public static void main(String[] args) throws IOException {
-
-        INDArray all_boxes = Nd4j.empty();
         String globPattern = "glob:**/*.xml";
         String folderPATH = "C:\\Users\\ChooWilson\\Desktop\\invoice\\train";
         getXmlFiles(globPattern, folderPATH);
-        System.out.println("Total number of xml files: "+xmlFiles.size());
+        System.out.println("Total number of xml files: " + xmlFiles.size());
+        all_boxes = xml2boxes();
+        System.out.println("NDArray shape: " + Arrays.toString(all_boxes.shape()));
+    }
 
+    private static INDArray xml2boxes() {
         for (String xmlPATH : xmlFiles) {
             File xmlFile = new File(xmlPATH);
             if (!xmlFile.exists()) {
@@ -87,7 +90,7 @@ public class GenerateAnchorBox {
                 }
             }
         }
-        System.out.println("NDArray shape: "+ Arrays.toString(all_boxes.shape()));
+        return all_boxes;
     }
 
     private static int extractAndParse(String line) {
