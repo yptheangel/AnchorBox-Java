@@ -1,3 +1,7 @@
+src/main/java/.idea/
+*.iml
+.idea/
+
 # Compiled class file
 *.class
 
